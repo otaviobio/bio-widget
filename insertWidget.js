@@ -88,14 +88,16 @@ function initialize(params) {
     const secondary = "#90BDC7";
     const background = "#fff"
     const accent = "#4D779A";
+    const chosenFont = "Arial, Helvetica, sans-serif"
 
     const style = `
-    *{
-      z-index: 999999999999999999999999999999;
-      font-family: Arial, Helvetica, sans-serif!important;
-    }
+      .fab-button, .link-list {
+        font-family: ${chosenFont}!important;
+      }
+
       .fab-button {
         position: fixed;
+        z-index: 999999999999999999999999999999;
         bottom: 20px;
         right: 20px;
         width: 50px;
@@ -153,6 +155,7 @@ function initialize(params) {
       
       .link-list {
         position: fixed;
+        z-index: 999999999999999999999999999999;
         bottom: 60px;
         right: 20px;
         padding: 20px 32px 20px 20px;
