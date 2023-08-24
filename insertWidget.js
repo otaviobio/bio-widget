@@ -1,4 +1,6 @@
 // insertWidget.js
+const upperArrowSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="upper-left-arrow" class="arrow"><path d="M9.41,8H17a1,1,0,0,0,0-2H7a1,1,0,0,0-.38.08,1,1,0,0,0-.54.54A1,1,0,0,0,6,7V17a1,1,0,0,0,2,0V9.41l8.29,8.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"></path></svg>'
+const lowerArrowSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="lower-right-arrow" class="arrow"><path d="M17,6a1,1,0,0,0-1,1v7.59L7.71,6.29A1,1,0,0,0,6.29,7.71L14.59,16H7a1,1,0,0,0,0,2H17a1,1,0,0,0,.38-.08,1,1,0,0,0,.54-.54A1,1,0,0,0,18,17V7A1,1,0,0,0,17,6Z"></path></svg>'
 
 async function createLinkList({ projectSource, supabaseUrl, apikey }) {
   return fetch(
@@ -42,12 +44,20 @@ function initialize(params) {
     }
 
     const fabButton = document.createElement("button");
-    fabButton.classList.add("my-fab-button");
-    fabButton.textContent = "+";
+    fabButton.classList.add("fab-button");
     document.body.appendChild(fabButton);
 
+    const fabIconsContainer = document.createElement("div");
+    fabIconsContainer.classList.add("fab-icons-container");
+    fabIconsContainer.innerHTML = `${upperArrowSvg} ${lowerArrowSvg}`
+    fabButton.appendChild(fabIconsContainer);
+
     const linkListUl = document.createElement("ul");
-    linkListUl.classList.add("my-link-list");
+    linkListUl.classList.add("link-list");
+    const listTitle = document.createElement("h4");
+    listTitle.innerHTML = "Components list:";
+    listTitle.classList.add("link-list-title");
+    linkListUl.appendChild(listTitle);
 
     linkList.forEach((item) => {
       const listItem = document.createElement("li");
@@ -58,86 +68,147 @@ function initialize(params) {
       anchor.href = item.url;
       anchor.target = "_blank";
       listItem.appendChild(anchor);
-      listItem.appendChild(category);
       linkListUl.appendChild(listItem);
+      linkListUl.appendChild(category);
     });
 
-    const closeButton = document.createElement("button");
-    closeButton.classList.add("my-close-button");
-    closeButton.textContent = "X";
-    closeButton.addEventListener("click", togglelinkListUl);
-
-    linkListUl.appendChild(closeButton);
     document.body.appendChild(linkListUl);
     function togglelinkListUl() {
+      const upperArrowEl = document.getElementById("upper-left-arrow");
+      const lowerArrowEl = document.getElementById("lower-right-arrow");
+
       linkListUl.classList.toggle("show");
+      upperArrowEl.classList.toggle("turn");
+      lowerArrowEl.classList.toggle("turn");
     }
 
     fabButton.addEventListener("click", () => togglelinkListUl());
+
+    const primary = "#1E336D";
+    const secondary = "#90BDC7";
+    const background = "#fff"
+    const accent = "#4D779A";
 
     const style = `
     *{
       z-index: 999999999999999999999999999999;
       font-family: Arial, Helvetica, sans-serif!important;
     }
-      .my-fab-button {
+      .fab-button {
         position: fixed;
         bottom: 20px;
         right: 20px;
         width: 50px;
         height: 50px;
-        background-color: #00b0bb;
+        background-color: ${primary};
+        opacity: 0.85;
         border-radius: 12px;
         font-size: 24px;
         color: white;
         border: none;
         outline: none;
         cursor: pointer;
+        transition: all 0.7s ease;
+        box-shadow: 0px 10px 13px -7px ${primary};
+      }
+
+      .fab-button:hover {
+        opacity: 1;
+        transition: all 0.7s ease;
+      }
+
+      .fab-icons-container {
+        position: relative;
+      }
+
+      .arrow {
+        position: absolute;
+        width: 25px;
+        transition: transform 0.5s ease;
+        fill: ${secondary};
+      }
+
+      #upper-left-arrow {
+        left: 0;
+        bottom: 0;
+        transform: translate(5px, 5px);
+      }
+
+      #upper-left-arrow.turn {
+        transform: rotate(180deg) translate(0, 0);
+        transition: transform 0.5s ease;
       }
       
-      .my-link-list {
+      #lower-right-arrow {
+        right: 0;
+        top: 0;
+        transform: translate(-5px, -5px);
+      }
+      
+      #lower-right-arrow.turn {
+        transform: rotate(180deg) translate(0, 0);
+        transition: transform 0.5s ease;
+      }
+      
+      .link-list {
         position: fixed;
-        bottom: 52px;
-        right: 64px;
-        padding: 16px;
-        background-color: #fff;
-        border: 1px solid #00b0bb;
+        bottom: 60px;
+        right: 20px;
+        padding: 20px 32px 20px 20px;
+        background-color: ${background};
+        border: 2px solid ${primary};
         border-radius: 5px;
+        box-shadow: 0px 0px 5px 0px ${accent};
   
         transform-origin: bottom right;
         transform: scale(0); /* Start with scale 0 to hide the list */
         transition: transform 0.3s ease; /* Smooth transition for scale */
       }
 
-      .my-link-list.show {
+      .link-list-title {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: ${primary};
+      }
+
+      .link-list.show {
         transform: scale(1);
       }
       
-      .my-link-list li {
+      .link-list li {
         list-style: none;
-        margin-bottom: 8px;
       }
       
-      .my-link-list li:last-child {
-        margin-bottom: 0;
-      }
-      
-      .my-link-list li a {
-        color: #333;
+      .link-list li a {
+        color: ${primary};
+        font-weight: bold;
         text-decoration: none;
+        opacity: 0.85;
       }
   
-      .my-link-list li a:hover {
-        color: #00b0bb;
+      .link-list li a:hover {
+        color: ${accent};
+      }
+
+      .link-list span {
+        font-size: 14px;
+        color: ${secondary};
+        font-weight: 500;
+        padding-bottom: 12px;
+        display: inline-block;
       }
       
-      .my-close-button {
+      .link-list span:last-child {
+        padding-bottom: 0;
+      }
+      
+      .close-button {
         position: absolute;
         top: -10px;
         left: -10px;
         width: 20px;
         height: 20px;
-        background-color: #00b0bb;
+        background-color: ${primary};
         border-radius: 50%;
         font-size: 12px;
         color: white;
