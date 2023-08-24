@@ -110,6 +110,7 @@ function initialize(params) {
         cursor: pointer;
         transition: all 0.7s ease;
         box-shadow: 0px 10px 13px -7px ${primary};
+        padding: 0!important;
       }
 
       .fab-button:hover {
