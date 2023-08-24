@@ -201,21 +201,6 @@ function initialize(params) {
       .link-list span:last-child {
         padding-bottom: 0;
       }
-      
-      .close-button {
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        width: 20px;
-        height: 20px;
-        background-color: ${primary};
-        border-radius: 50%;
-        font-size: 12px;
-        color: white;
-        border: none;
-        outline: none;
-        cursor: pointer;
-      }
     `;
 
     const styleElement = document.createElement("style");
